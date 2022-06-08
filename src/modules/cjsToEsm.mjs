@@ -1,23 +1,16 @@
 import path from 'path'
 import {release, version} from 'os';
-import {createServer as createServerHttp}  from 'http';
-import * as hello from './files/c'
-import { fileURLToPath } from 'url';
+import {createServer as createServerHttp} from 'http';
+import {fileURLToPath} from 'url';
+import {createRequire} from 'node:module';
+
+const require = createRequire(import.meta.url);
 
 const random = Math.random();
 
-let unknownObject;
+const unknownObject = (random > 0.5) ? require('./files/a.json') : require('./files/b.json');
 
-if (random > 0.5) {
-    unknownObject = './files/a.json';
-} else {
-    unknownObject = './files/b.json';
-}
-
-import(unknownObject).then(module => {
-    module.default();
-})
-
+export default unknownObject;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
